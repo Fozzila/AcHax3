@@ -28,7 +28,9 @@ public:
 	int32_t PistolAmmo; //0x013C
 	char pad_0140[16]; //0x0140
 	int32_t RifleAmmo; //0x0150
-	char pad_0154[28]; //0x0154
-	int32_t primaryTimer;
+	char pad_0154[36]; //0x0154
+	int32_t primaryTimer; //0x0178
+
+
 	
 }; //Size: 0x0160

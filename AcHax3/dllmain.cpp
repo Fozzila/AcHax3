@@ -35,6 +35,7 @@ DWORD WINAPI MainThread(HMODULE hModule)
     bool healthToggle = false;
     bool AmmoToggle = false;
     bool pistolToggle = false;
+    bool debug = true;
     while (true)
     {
 
@@ -67,8 +68,21 @@ DWORD WINAPI MainThread(HMODULE hModule)
             playerPtr->localPlayerPtr->RifleAmmo = 999;
         if (pistolToggle)
             playerPtr->localPlayerPtr->PistolAmmo = 999;
-            
-
+        if (GetAsyncKeyState(VK_INSERT) & 1)
+        {
+            debug = !debug;
+            if (debug)
+                std::cout << "\n Debug: On \n";
+            else
+                std::cout << "\n Debug: Off \n";
+        }
+        if(debug)
+        {
+            if (GetAsyncKeyState(VK_F10))
+            {
+                playerPtr->localPlayerPtr->primaryTimer = 0;
+            }
+        }
     }
 
 
