@@ -154,11 +154,13 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="geom.h" />
     <ClInclude Include="includes.h" />
+    <ClInclude Include="main.h" />
     <ClInclude Include="offsets.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\AcHax2\AcHax2\geom.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -11,6 +11,7 @@
 #include "geom.h"
 #include "framework.h"
 #include "Offsets.h"
+#include "main.h"
 #endif 
 
 
