@@ -1,5 +1,5 @@
 #include "includes.h"
-
+DWORD playerAddy = *(DWORD*)((DWORD)GetModuleHandleA(NULL) + 0x109B74);
 MainClass* playerPtr = (MainClass*)((DWORD)GetModuleHandleA(NULL) + 0x109B74);
 bool healthToggle = false;
 bool AmmoToggle = false;
@@ -31,6 +31,11 @@ int getNumOfPlayers()
 Vector2 screenSize()
 {
     return { (float)*(int*)((DWORD)GetModuleHandleA(NULL) + 0x110C94), (float)*(int*)((DWORD)GetModuleHandleA(NULL) + 0x110C98) };
+}
+Vector2 centerScreen()
+{
+    Vector2 screenSize = { (float)*(int*)((DWORD)GetModuleHandleA(NULL) + 0x110C94), (float)*(int*)((DWORD)GetModuleHandleA(NULL) + 0x110C98) };
+    return { screenSize.x / 2, screenSize.y / 2 };
 }
 float getMarix()
 {
@@ -70,12 +75,15 @@ void warn(const char* warn)
 }
 void playerLoop()
 {
-    warn("Player Loop Function Called");
     float playerNum = (float)*(int*)(DWORD)(0x50F500);
     DWORD player_list = *(DWORD*)(0x50F4F8);
     float matrix[16];
     DWORD viewMatrix = 0x501AE8;
     Vector2 playerScreenLoc;
+    float bestdistToCenter = FLT_MAX;
+    DWORD bestPlayerInCheck;
+    DWORD bestPlayerOutCheck;
+
     for (unsigned int i = 0; i < playerNum; i++)
     {
 
@@ -83,35 +91,43 @@ void playerLoop()
         DWORD current_player = *(DWORD*)(player_list + 0x4 * i);
         if (current_player)
         {
-            entity* current_player_ent = (entity*)(current_player);
-            if (teamCheck(current_player))
+            if (current_player != playerAddy)
             {
-                if (WorldToScreen(current_player_ent->HeadPos, playerScreenLoc, matrix, screenSize().x, screenSize().y));
+                if (teamCheck(current_player))
                 {
-                    if(playerScreenLoc.x > -1 && playerScreenLoc.x > 1060 && playerScreenLoc.y < 2000 && playerScreenLoc.y > -1)
-                    printf("ScreenX: %f \n", playerScreenLoc.x);
-                    printf("ScreenY: %f \n", playerScreenLoc.y);
-                    printf("\n");
-
+                    
+                    entity* current_player_ent = (entity*)(current_player);
+                    if (current_player_ent->Health < 200)
+                    {
+                        
+                        WorldToScreenForAimbot(current_player_ent->HeadPos, playerScreenLoc, matrix, screenSize().x, screenSize().y);
+                        float playerToCursor = Get2DDistance(centerScreen(), playerScreenLoc);
+                        if (playerToCursor > 0)
+                        {
+                            
+                            if (playerToCursor < bestdistToCenter)
+                            {
+                                std::cout << i << "\n";
+                                bestdistToCenter = playerToCursor;
+                                bestPlayerInCheck = current_player;
+                            }
+                        }
+                    }
+                }
+                if (i >= playerNum)
+                {
+                    bestPlayerOutCheck = bestPlayerInCheck;
+                    std::cout << std::hex << bestPlayerOutCheck << "\n";
                 }
             }
         }
-
         
     }
-    warn("Player Loop Function Ended");
 }
 void mainLoop()
 {
     while (true)
     {
-
-
-
-
-
-
-
         if (GetAsyncKeyState(VK_F1) & 1) // INF HEALTH
         {
             healthToggle = !healthToggle;
@@ -189,7 +205,7 @@ void mainLoop()
         if (rapidFireToggle)
             playerPtr->localPlayerPtr->primaryTimer = 50; // MEMORY WRITING FREEZING
         if (GetAsyncKeyState(0x20))
-            if(increasedJump)
+            if (increasedJump)
                 playerPtr->localPlayerPtr->BodyPos.z += 0.05; // MEMORY WRITING FREEZING
         if (GetAsyncKeyState(VK_INSERT) & 1)
         {
@@ -203,20 +219,10 @@ void mainLoop()
         {
             if (GetAsyncKeyState(VK_F10) & 1)
             {
-                
                 playerLoop();
-
             }
 
         }
-
-
-
-
-
-
-
-
         Sleep(1);
     }
 }
