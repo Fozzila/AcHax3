@@ -6,7 +6,10 @@ bool AmmoToggle = false;
 bool pistolToggle = false;
 bool rapidFireToggle = false;
 bool increasedJump = false;
+bool aimbot = false;
+bool recoil = false;
 bool debug = false;
+
 float consoleLineLog = 1;
 float consoleLineWarn = 1;
 int playerNum = *(int*)(DWORD)(0x50F500);
@@ -14,14 +17,17 @@ bool teamCheck(DWORD ent)
 {
     float ENTTEAMID = (float)*(int*)(ent + 0x32C);
     float METEAMID = (float)*(int*)((DWORD)GetModuleHandleA(NULL) + 0x109B74 + 0x32C);
-    if (ENTTEAMID != METEAMID)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+
+        if (ENTTEAMID != METEAMID)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    
+
 }
 int getNumOfPlayers()
 {
@@ -73,7 +79,7 @@ void warn(const char* warn)
     consoleLineWarn += 1;
 
 }
-void playerLoop()
+DWORD playerLoop()
 {
     float playerNum = (float)*(int*)(DWORD)(0x50F500);
     DWORD player_list = *(DWORD*)(0x50F4F8);
@@ -81,47 +87,62 @@ void playerLoop()
     DWORD viewMatrix = 0x501AE8;
     Vector2 playerScreenLoc;
     float bestdistToCenter = FLT_MAX;
-    DWORD bestPlayerInCheck;
-    DWORD bestPlayerOutCheck;
-
+    DWORD bestPlayerInCheck = NULL;
+    float playerToCursor = FLT_MAX;
+    Vector2 myView;
+    Vector2 calcAngle;
+    float dist2;
     for (unsigned int i = 0; i < playerNum; i++)
     {
 
         memcpy(&matrix, (PBYTE*)viewMatrix, sizeof(matrix));
         DWORD current_player = *(DWORD*)(player_list + 0x4 * i);
+        myView = playerPtr->localPlayerPtr->viewAngle;
         if (current_player)
         {
-            if (current_player != playerAddy)
+            if (*(int*)(current_player + 0x0338) == 0)
             {
-                if (teamCheck(current_player))
+                if (current_player != playerAddy)
                 {
-                    
-                    entity* current_player_ent = (entity*)(current_player);
-                    if (current_player_ent->Health < 200)
+                    if (teamCheck(current_player))
                     {
-                        
-                        WorldToScreenForAimbot(current_player_ent->HeadPos, playerScreenLoc, matrix, screenSize().x, screenSize().y);
-                        float playerToCursor = Get2DDistance(centerScreen(), playerScreenLoc);
-                        if (playerToCursor > 0)
+                        entity* current_player_ent = (entity*)(current_player);
+
+                        if (current_player_ent->Health < 120 || current_player_ent->Health > -1)
                         {
-                            
-                            if (playerToCursor < bestdistToCenter)
-                            {
-                                std::cout << i << "\n";
-                                bestdistToCenter = playerToCursor;
-                                bestPlayerInCheck = current_player;
-                            }
+
+                                calcAngle = CalcAngle(playerPtr->localPlayerPtr->HeadPos, current_player_ent->HeadPos);
+                                dist2 = Get2DDistance(myView, calcAngle);
+
+                                if (dist2 < bestdistToCenter)
+                                {
+                                    bestdistToCenter = dist2;
+                                    bestPlayerInCheck = current_player;
+                                }
+                        
                         }
                     }
                 }
-                if (i >= playerNum)
-                {
-                    bestPlayerOutCheck = bestPlayerInCheck;
-                    std::cout << std::hex << bestPlayerOutCheck << "\n";
-                }
             }
+
         }
         
+    }
+    if (bestPlayerInCheck != NULL)
+    {
+        return bestPlayerInCheck;
+    }
+}
+void aimbotF()
+{
+    Vector2 angle;
+
+    entity* bestEnt = (entity*)playerLoop();
+    if (bestEnt->Health < 200 || bestEnt->Health > -1)
+    {
+        angle = CalcAngle(playerPtr->localPlayerPtr->HeadPos, bestEnt->HeadPos);
+        playerPtr->localPlayerPtr->viewAngle.x = angle.x;
+        playerPtr->localPlayerPtr->viewAngle.y = angle.y;
     }
 }
 void mainLoop()
@@ -177,6 +198,22 @@ void mainLoop()
             if (increasedJump == false)
                 playerPtr->localPlayerPtr->Health = 100;
         }
+        if (GetAsyncKeyState(VK_F6) & 1) // INCREASED JUMP
+        {
+            aimbot = !aimbot;
+            if (aimbot)
+                log("Aimbot[F]: On");
+            else
+                log("Aimbot[F]: Off");      
+        }
+        if (GetAsyncKeyState(VK_F7) & 1)
+        {
+            recoil = !recoil;
+            if (recoil)
+                log("Recoil: On");
+            else
+                log("Recoil: Off");
+        }
         if (GetAsyncKeyState(VK_END) & 1) // CLOSE
         {
             warn("Cheat Closing: 3");
@@ -187,7 +224,7 @@ void mainLoop()
             Sleep(1000);
             break;
         }
-
+        
 
 
 
@@ -207,6 +244,18 @@ void mainLoop()
         if (GetAsyncKeyState(0x20))
             if (increasedJump)
                 playerPtr->localPlayerPtr->BodyPos.z += 0.05; // MEMORY WRITING FREEZING
+        if (aimbot)
+        {
+            if (GetAsyncKeyState(0x46))
+            {
+                aimbotF();
+            }
+        }
+        if(recoil)
+            playerPtr->localPlayerPtr->recoilXspeedY.x -= playerPtr->localPlayerPtr->recoilXspeedY.x;
+            
+            
+            
         if (GetAsyncKeyState(VK_INSERT) & 1)
         {
             debug = !debug;
@@ -217,9 +266,11 @@ void mainLoop()
         }
         if (debug)
         {
-            if (GetAsyncKeyState(VK_F10) & 1)
+            if (GetAsyncKeyState(VK_F10))
             {
-                playerLoop();
+                
+                
+
             }
 
         }
