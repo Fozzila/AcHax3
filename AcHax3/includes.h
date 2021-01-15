@@ -12,6 +12,7 @@
 #include "Offsets.h"
 #include "main.h"
 #include "framework.h"
+#include "keys.h"
 #endif 
 
 

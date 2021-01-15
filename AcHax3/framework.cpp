@@ -1,6 +1,7 @@
 #include "includes.h"
 int consoleLineLog = 1;
 int consoleLineWarn = 1;
+
 DWORD frame::offsets::playerList()
 {
 	return *(DWORD*)(0x50F4F8);

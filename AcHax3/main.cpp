@@ -42,6 +42,9 @@ DWORD playerLoop()
         return bestPlayerInCheck;
     }
 }
+
+
+
 void aimbotF()
 {
     Vector2 angle;
@@ -53,6 +56,9 @@ void aimbotF()
         frame::offsets::playerPtr()->localPlayerPtr->viewAngle.y = angle.y;
     }
 }
+
+
+
 void mainLoop()
 {
     while (true)
@@ -131,27 +137,7 @@ void mainLoop()
             frame::warn("Cheat Closing: 1");
             Sleep(1000);
             break;
-        }     
-        if (frame::healthToggle)
-            frame::offsets::playerPtr()->localPlayerPtr->Health = 999; // MEMORY WRITING FREEZING
-        if (frame::AmmoToggle)
-            frame::offsets::playerPtr()->localPlayerPtr->RifleAmmo = 999; // MEMORY WRITING FREEZING
-        if (frame::pistolToggle)
-            frame::offsets::playerPtr()->localPlayerPtr->PistolAmmo = 999; // MEMORY WRITING FREEZING
-        if (frame::rapidFireToggle)
-            frame::offsets::playerPtr()->localPlayerPtr->primaryTimer = 50; // MEMORY WRITING FREEZING
-        if (GetAsyncKeyState(0x20))
-            if (frame::increasedJump)
-                frame::offsets::playerPtr()->localPlayerPtr->BodyPos.z += 0.05; // MEMORY WRITING FREEZING
-        if (frame::aimbot)
-        {
-            if (GetAsyncKeyState(0x46))
-            {
-                aimbotF();
-            }
-        }
-        if(frame::recoil)
-            frame::offsets::playerPtr()->localPlayerPtr->recoilXspeedY.x -= frame::offsets::playerPtr()->localPlayerPtr->recoilXspeedY.x;                  
+        }    
         if (GetAsyncKeyState(VK_INSERT) & 1)
         {
             frame::debug = !frame::debug;
@@ -167,6 +153,27 @@ void mainLoop()
             }
 
         }
+        if (frame::healthToggle)
+            frame::offsets::playerPtr()->localPlayerPtr->Health = 999; // MEMORY WRITING FREEZING
+        if (frame::AmmoToggle)
+            frame::offsets::playerPtr()->localPlayerPtr->RifleAmmo = 999; // MEMORY WRITING FREEZING
+        if (frame::pistolToggle)
+            frame::offsets::playerPtr()->localPlayerPtr->PistolAmmo = 999; // MEMORY WRITING FREEZING
+        if (frame::rapidFireToggle)
+            frame::offsets::playerPtr()->localPlayerPtr->primaryTimer = 50; // MEMORY WRITING FREEZING
+        if (GetAsyncKeyState(0x20))
+            if (frame::increasedJump)
+                frame::offsets::playerPtr()->localPlayerPtr->BodyPos.z += 0.05; // MEMORY WRITING FREEZING
+        if (frame::aimbot)
+        {
+            if (GetAsyncKeyState(VK_KEY_F))
+            {
+                aimbotF();
+            }
+        }
+        if(frame::recoil)
+            frame::offsets::playerPtr()->localPlayerPtr->recoilXspeedY.x -= frame::offsets::playerPtr()->localPlayerPtr->recoilXspeedY.x;                  
+
         Sleep(1);
     }
 }

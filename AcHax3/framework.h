@@ -2,6 +2,7 @@
 #include "includes.h"
 namespace frame
 {
+
 	static bool healthToggle = false;
 	static bool AmmoToggle = false;
 	static bool pistolToggle = false;
@@ -10,6 +11,9 @@ namespace frame
 	static bool aimbot = false;
 	static bool recoil = false;
 	static bool debug = false;
+	class keys
+	{
+	};
 	class offsets
 	{
 	public:

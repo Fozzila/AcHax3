@@ -154,6 +154,7 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="geom.h" />
     <ClInclude Include="includes.h" />
+    <ClInclude Include="keys.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="offsets.h" />
   </ItemGroup>

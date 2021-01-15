@@ -1,15 +1,11 @@
-﻿  geom.cpp
-E:\Repos\AcHax2\AcHax2\geom.cpp(34,14): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-E:\Repos\AcHax2\AcHax2\geom.cpp(35,14): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-E:\Repos\AcHax2\AcHax2\geom.cpp(37,16): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-  dllmain.cpp
+﻿  dllmain.cpp
   framework.cpp
   main.cpp
 E:\Repos\AcHax3\AcHax3\main.cpp(8,32): warning C4018: '<': signed/unsigned mismatch
-E:\Repos\AcHax3\AcHax3\main.cpp(145,79): warning C4305: '+=': truncation from 'double' to 'float'
+E:\Repos\AcHax3\AcHax3\main.cpp(166,79): warning C4305: '+=': truncation from 'double' to 'float'
   Generating code
-  Previous IPDB not found, fall back to full compilation.
-E:\Repos\AcHax3\AcHax3\main.cpp(44): warning C4715: 'playerLoop': not all control paths return a value
-  All 34 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  2 of 34 functions ( 5.9%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   AcHax3.vcxproj -> E:\Repos\AcHax3\Release\AcHax3.dll
