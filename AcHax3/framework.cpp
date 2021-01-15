@@ -1,7 +1,14 @@
 #include "includes.h"
 int consoleLineLog = 1;
 int consoleLineWarn = 1;
-
+DWORD frame::offsets::playerList()
+{
+	return *(DWORD*)(0x50F4F8);
+}
+Vector2 frame::viewAngle()
+{
+	return frame::offsets::playerPtr()->localPlayerPtr->viewAngle;
+}
 MainClass* frame::offsets::playerPtr()
 {
 	return (MainClass*)((DWORD)GetModuleHandleA(NULL) + 0x109B74);

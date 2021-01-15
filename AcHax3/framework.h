@@ -14,16 +14,15 @@ namespace frame
 	{
 	public:
 		static int playerNum();
-
 		static DWORD playerAddress();
-
 		static MainClass* playerPtr();
-
+		static DWORD playerList();
 	};
 	static Vector2 screenSize()
 	{
 		return { (float)*(int*)((DWORD)GetModuleHandleA(NULL) + 0x110C94), (float)*(int*)((DWORD)GetModuleHandleA(NULL) + 0x110C98) };
 	}
+	Vector2 viewAngle();
 	static Vector2 centerScreen();
 	static float getMarix();
 	float teamCheck(DWORD ent);

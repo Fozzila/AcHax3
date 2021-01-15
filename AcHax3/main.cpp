@@ -1,24 +1,14 @@
 #include "includes.h"
-
 DWORD playerLoop()
 {
-    float playerNum = (float)*(int*)(DWORD)(0x50F500);
-    DWORD player_list = *(DWORD*)(0x50F4F8);
-    float matrix[16];
-    DWORD viewMatrix = 0x501AE8;
-    Vector2 playerScreenLoc;
     float bestdistToCenter = FLT_MAX;
     DWORD bestPlayerInCheck = NULL;
-    float playerToCursor = FLT_MAX;
-    Vector2 myView;
     Vector2 calcAngle;
     float dist2;
     for (unsigned int i = 0; i < frame::offsets::playerNum(); i++)
     {
-
-        memcpy(&matrix, (PBYTE*)viewMatrix, sizeof(matrix));
-        DWORD current_player = *(DWORD*)(player_list + 0x4 * i);
-        myView = frame::offsets::playerPtr()->localPlayerPtr->viewAngle;
+        DWORD current_player = *(DWORD*)(frame::offsets::playerList() + 0x4 * i);
+        
         if (current_player)
         {
             if (*(int*)(current_player + 0x0338) == 0)
@@ -32,24 +22,20 @@ DWORD playerLoop()
                         {
                             if (current_player_ent->Health < 120 || current_player_ent->Health > -1)
                             {
-
                                 calcAngle = CalcAngle(frame::offsets::playerPtr()->localPlayerPtr->HeadPos, current_player_ent->HeadPos);
-                                dist2 = Get2DDistance(myView, calcAngle);
+                                dist2 = Get2DDistance(frame::viewAngle(), calcAngle);
 
                                 if (dist2 < bestdistToCenter)
                                 {
                                     bestdistToCenter = dist2;
                                     bestPlayerInCheck = current_player;
                                 }
-
                             }
                         }
                     }
                 }
             }
-
         }
-        
     }
     if (bestPlayerInCheck != NULL)
     {
@@ -59,7 +45,6 @@ DWORD playerLoop()
 void aimbotF()
 {
     Vector2 angle;
-
     entity* bestEnt = (entity*)playerLoop();
     if (bestEnt->Health < 200 || bestEnt->Health > -1)
     {
@@ -146,16 +131,7 @@ void mainLoop()
             frame::warn("Cheat Closing: 1");
             Sleep(1000);
             break;
-        }
-        
-
-
-
-
-
-
-
-
+        }     
         if (frame::healthToggle)
             frame::offsets::playerPtr()->localPlayerPtr->Health = 999; // MEMORY WRITING FREEZING
         if (frame::AmmoToggle)
@@ -175,10 +151,7 @@ void mainLoop()
             }
         }
         if(frame::recoil)
-            frame::offsets::playerPtr()->localPlayerPtr->recoilXspeedY.x -= frame::offsets::playerPtr()->localPlayerPtr->recoilXspeedY.x;
-            
-            
-            
+            frame::offsets::playerPtr()->localPlayerPtr->recoilXspeedY.x -= frame::offsets::playerPtr()->localPlayerPtr->recoilXspeedY.x;                  
         if (GetAsyncKeyState(VK_INSERT) & 1)
         {
             frame::debug = !frame::debug;
@@ -191,9 +164,6 @@ void mainLoop()
         {
             if (GetAsyncKeyState(VK_F10))
             {
-                
-                
-
             }
 
         }
