@@ -160,6 +160,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\AcHax2\AcHax2\geom.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="framework.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,84 +1,5 @@
 #include "includes.h"
-DWORD playerAddy = *(DWORD*)((DWORD)GetModuleHandleA(NULL) + 0x109B74);
-MainClass* playerPtr = (MainClass*)((DWORD)GetModuleHandleA(NULL) + 0x109B74);
-bool healthToggle = false;
-bool AmmoToggle = false;
-bool pistolToggle = false;
-bool rapidFireToggle = false;
-bool increasedJump = false;
-bool aimbot = false;
-bool recoil = false;
-bool debug = false;
 
-float consoleLineLog = 1;
-float consoleLineWarn = 1;
-int playerNum = *(int*)(DWORD)(0x50F500);
-bool teamCheck(DWORD ent)
-{
-    float ENTTEAMID = (float)*(int*)(ent + 0x32C);
-    float METEAMID = (float)*(int*)((DWORD)GetModuleHandleA(NULL) + 0x109B74 + 0x32C);
-
-        if (ENTTEAMID != METEAMID)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    
-
-}
-int getNumOfPlayers()
-{
-    return (int)*(DWORD*)(0x50F500);
-
-}
-Vector2 screenSize()
-{
-    return { (float)*(int*)((DWORD)GetModuleHandleA(NULL) + 0x110C94), (float)*(int*)((DWORD)GetModuleHandleA(NULL) + 0x110C98) };
-}
-Vector2 centerScreen()
-{
-    Vector2 screenSize = { (float)*(int*)((DWORD)GetModuleHandleA(NULL) + 0x110C94), (float)*(int*)((DWORD)GetModuleHandleA(NULL) + 0x110C98) };
-    return { screenSize.x / 2, screenSize.y / 2 };
-}
-float getMarix()
-{
-    DWORD viewMatrix = 0x501AE8;
-    float matrix[16];
-    memcpy(&matrix, (PBYTE*)viewMatrix, sizeof(matrix));
-}
-void logf(const float* print)
-{
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(hConsole, (FOREGROUND_GREEN));
-    std::cout << "[" << (float)consoleLineLog << "] " << (const float*)print << "\n";
-    consoleLineLog += 1;
-}
-void log(const char* print)
-{
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(hConsole, (FOREGROUND_GREEN));
-    std::cout << "[" << (float)consoleLineLog << "] " << print << "\n";
-    consoleLineLog += 1;
-}
-void logint(int print)
-{
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(hConsole, (FOREGROUND_GREEN));
-    std::cout << "[" << (float)consoleLineLog << "] " << print << "\n";
-    consoleLineLog += 1;
-}
-void warn(const char* warn)
-{
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(hConsole, (FOREGROUND_RED));
-    std::cout << "[" << (float)consoleLineWarn << "] " << warn << "\n";
-    SetConsoleTextAttribute(hConsole, (FOREGROUND_GREEN));
-    consoleLineWarn += 1;
-
-}
 DWORD playerLoop()
 {
     float playerNum = (float)*(int*)(DWORD)(0x50F500);
@@ -92,26 +13,27 @@ DWORD playerLoop()
     Vector2 myView;
     Vector2 calcAngle;
     float dist2;
-    for (unsigned int i = 0; i < playerNum; i++)
+    for (unsigned int i = 0; i < frame::offsets::playerNum(); i++)
     {
 
         memcpy(&matrix, (PBYTE*)viewMatrix, sizeof(matrix));
         DWORD current_player = *(DWORD*)(player_list + 0x4 * i);
-        myView = playerPtr->localPlayerPtr->viewAngle;
+        myView = frame::offsets::playerPtr()->localPlayerPtr->viewAngle;
         if (current_player)
         {
             if (*(int*)(current_player + 0x0338) == 0)
             {
-                if (current_player != playerAddy)
+                if (current_player != frame::offsets::playerAddress())
                 {
-                    if (teamCheck(current_player))
+                    if (frame::teamCheck(current_player))
                     {
                         entity* current_player_ent = (entity*)(current_player);
-
-                        if (current_player_ent->Health < 120 || current_player_ent->Health > -1)
+                        if (current_player_ent)
                         {
+                            if (current_player_ent->Health < 120 || current_player_ent->Health > -1)
+                            {
 
-                                calcAngle = CalcAngle(playerPtr->localPlayerPtr->HeadPos, current_player_ent->HeadPos);
+                                calcAngle = CalcAngle(frame::offsets::playerPtr()->localPlayerPtr->HeadPos, current_player_ent->HeadPos);
                                 dist2 = Get2DDistance(myView, calcAngle);
 
                                 if (dist2 < bestdistToCenter)
@@ -119,7 +41,8 @@ DWORD playerLoop()
                                     bestdistToCenter = dist2;
                                     bestPlayerInCheck = current_player;
                                 }
-                        
+
+                            }
                         }
                     }
                 }
@@ -140,9 +63,9 @@ void aimbotF()
     entity* bestEnt = (entity*)playerLoop();
     if (bestEnt->Health < 200 || bestEnt->Health > -1)
     {
-        angle = CalcAngle(playerPtr->localPlayerPtr->HeadPos, bestEnt->HeadPos);
-        playerPtr->localPlayerPtr->viewAngle.x = angle.x;
-        playerPtr->localPlayerPtr->viewAngle.y = angle.y;
+        angle = CalcAngle(frame::offsets::playerPtr()->localPlayerPtr->HeadPos, bestEnt->HeadPos);
+        frame::offsets::playerPtr()->localPlayerPtr->viewAngle.x = angle.x;
+        frame::offsets::playerPtr()->localPlayerPtr->viewAngle.y = angle.y;
     }
 }
 void mainLoop()
@@ -151,76 +74,76 @@ void mainLoop()
     {
         if (GetAsyncKeyState(VK_F1) & 1) // INF HEALTH
         {
-            healthToggle = !healthToggle;
-            if (healthToggle)
-                log("Inf Health: On");
+            frame::healthToggle = !frame::healthToggle;
+            if (frame::healthToggle)
+                frame::log("Inf Health: On");
             else
-                log("Inf Health: Off");
-            if (healthToggle == false)
-                playerPtr->localPlayerPtr->Health = 100;
+                frame::log("Inf Health: Off");
+            if (frame::healthToggle == false)
+                frame::offsets::playerPtr()->localPlayerPtr->Health = 100;
         }
         if (GetAsyncKeyState(VK_F2) & 1) // INF RIFLE AMMO
         {
-            AmmoToggle = !AmmoToggle;
-            if (AmmoToggle)
-                log("Inf Rifle Ammo: On");
+            frame::AmmoToggle = !frame::AmmoToggle;
+            if (frame::AmmoToggle)
+                frame::log("Inf Rifle Ammo: On");
             else
-                log("Inf Rifle Ammo: Off");
-            if (AmmoToggle == false)
-                playerPtr->localPlayerPtr->RifleAmmo = 20;
+                frame::log("Inf Rifle Ammo: Off");
+            if (frame::AmmoToggle == false)
+                frame::offsets::playerPtr()->localPlayerPtr->RifleAmmo = 20;
         }
         if (GetAsyncKeyState(VK_F3) & 1) // INF PISTOL AMMO
         {
-            pistolToggle = !pistolToggle;
-            if (pistolToggle)
-                log("Inf Pistol Ammon: On");
+            frame::pistolToggle = !frame::pistolToggle;
+            if (frame::pistolToggle)
+                frame::log("Inf Pistol Ammon: On");
             else
-                log("Inf Pistol Ammon: Off");
-            if (pistolToggle == false)
-                playerPtr->localPlayerPtr->PistolAmmo = 10;
+                frame::log("Inf Pistol Ammon: Off");
+            if (frame::pistolToggle == false)
+                frame::offsets::playerPtr()->localPlayerPtr->PistolAmmo = 10;
 
         }
         if (GetAsyncKeyState(VK_F4) & 1) // RAPID FIRE
         {
-            rapidFireToggle = !rapidFireToggle;
-            if (rapidFireToggle)
-                log("Rapid Fire: On");
+            frame::rapidFireToggle = !frame::rapidFireToggle;
+            if (frame::rapidFireToggle)
+                frame::log("Rapid Fire: On");
             else
-                log("Rapid Fire: Off");
+                frame::log("Rapid Fire: Off");
         }
         if (GetAsyncKeyState(VK_F5) & 1) // INCREASED JUMP
         {
-            increasedJump = !increasedJump;
-            if (increasedJump)
-                log("Jump+: On");
+            frame::increasedJump = !frame::increasedJump;
+            if (frame::increasedJump)
+                frame::log("Jump+: On");
             else
-                log("Jump+: Off");
-            if (increasedJump == false)
-                playerPtr->localPlayerPtr->Health = 100;
+                frame::log("Jump+: Off");
+            if (frame::increasedJump == false)
+                frame::offsets::playerPtr()->localPlayerPtr->Health = 100;
         }
-        if (GetAsyncKeyState(VK_F6) & 1) // INCREASED JUMP
+        if (GetAsyncKeyState(VK_F6) & 1) // AIMBOT
         {
-            aimbot = !aimbot;
-            if (aimbot)
-                log("Aimbot[F]: On");
+            frame::aimbot = !frame::aimbot;
+            if (frame::aimbot)
+                frame::log("Aimbot[F]: On");
             else
-                log("Aimbot[F]: Off");      
+                frame::log("Aimbot[F]: Off");
         }
-        if (GetAsyncKeyState(VK_F7) & 1)
+        if (GetAsyncKeyState(VK_F7) & 1) // RECOIL
         {
-            recoil = !recoil;
-            if (recoil)
-                log("Recoil: On");
+            frame::recoil = !frame::recoil;
+            if (frame::recoil)
+                frame::log("Recoil: On");
             else
-                log("Recoil: Off");
+                frame::log("Recoil: Off");
         }
         if (GetAsyncKeyState(VK_END) & 1) // CLOSE
         {
-            warn("Cheat Closing: 3");
+            frame::warn("Cheat Closing: 3");
             Sleep(1000);
-            warn("Cheat Closing: 2");
+            frame::warn("Cheat Closing: 2");
             Sleep(1000);
-            warn("Cheat Closing: 1");
+            frame::warn("Cheat Closing: 1");
             Sleep(1000);
             break;
         }
@@ -233,38 +156,38 @@ void mainLoop()
 
 
 
-        if (healthToggle)
-            playerPtr->localPlayerPtr->Health = 999; // MEMORY WRITING FREEZING
-        if (AmmoToggle)
-            playerPtr->localPlayerPtr->RifleAmmo = 999; // MEMORY WRITING FREEZING
-        if (pistolToggle)
-            playerPtr->localPlayerPtr->PistolAmmo = 999; // MEMORY WRITING FREEZING
-        if (rapidFireToggle)
-            playerPtr->localPlayerPtr->primaryTimer = 50; // MEMORY WRITING FREEZING
+        if (frame::healthToggle)
+            frame::offsets::playerPtr()->localPlayerPtr->Health = 999; // MEMORY WRITING FREEZING
+        if (frame::AmmoToggle)
+            frame::offsets::playerPtr()->localPlayerPtr->RifleAmmo = 999; // MEMORY WRITING FREEZING
+        if (frame::pistolToggle)
+            frame::offsets::playerPtr()->localPlayerPtr->PistolAmmo = 999; // MEMORY WRITING FREEZING
+        if (frame::rapidFireToggle)
+            frame::offsets::playerPtr()->localPlayerPtr->primaryTimer = 50; // MEMORY WRITING FREEZING
         if (GetAsyncKeyState(0x20))
-            if (increasedJump)
-                playerPtr->localPlayerPtr->BodyPos.z += 0.05; // MEMORY WRITING FREEZING
-        if (aimbot)
+            if (frame::increasedJump)
+                frame::offsets::playerPtr()->localPlayerPtr->BodyPos.z += 0.05; // MEMORY WRITING FREEZING
+        if (frame::aimbot)
         {
             if (GetAsyncKeyState(0x46))
             {
                 aimbotF();
             }
         }
-        if(recoil)
-            playerPtr->localPlayerPtr->recoilXspeedY.x -= playerPtr->localPlayerPtr->recoilXspeedY.x;
+        if(frame::recoil)
+            frame::offsets::playerPtr()->localPlayerPtr->recoilXspeedY.x -= frame::offsets::playerPtr()->localPlayerPtr->recoilXspeedY.x;
             
             
             
         if (GetAsyncKeyState(VK_INSERT) & 1)
         {
-            debug = !debug;
-            if (debug)
-                log("Debug: On");
+            frame::debug = !frame::debug;
+            if (frame::debug)
+                frame::log("Debug: On");
             else
-                log("Debug: Off");
+                frame::log("Debug: Off");
         }
-        if (debug)
+        if (frame::debug)
         {
             if (GetAsyncKeyState(VK_F10))
             {
