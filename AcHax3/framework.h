@@ -1,5 +1,7 @@
 #pragma once
 #include "includes.h"
+#define string std::string
+#define toString(x) std::to_string(x)
 namespace frame
 {
 
@@ -30,6 +32,6 @@ namespace frame
 	static Vector2 centerScreen();
 	static float getMarix();
 	float teamCheck(DWORD ent);
-	void log(const char* print);
+	void log(string);
 	void warn(const char* warn);
 }

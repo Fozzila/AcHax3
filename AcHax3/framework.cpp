@@ -52,7 +52,7 @@ float frame::teamCheck(DWORD ent)
 	}
 	return false;
 }
-void frame::log(const char* print)
+void frame::log(string print)
 {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(hConsole, (FOREGROUND_GREEN));

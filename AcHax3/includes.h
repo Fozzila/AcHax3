@@ -13,6 +13,14 @@
 #include "main.h"
 #include "framework.h"
 #include "keys.h"
+#include "render.h"
+#include <string>
+#include "mem.h"
+#include "proc.h"
+#include "hook.h"
+#include <gl/GL.h>
+#include <gl/GLU.h>
+#include "openGl.h"
 #endif 
 
 

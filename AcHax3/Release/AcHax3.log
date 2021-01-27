@@ -1,10 +1,9 @@
-﻿  dllmain.cpp
-  framework.cpp
-  main.cpp
-E:\Repos\AcHax3\AcHax3\main.cpp(8,32): warning C4018: '<': signed/unsigned mismatch
-E:\Repos\AcHax3\AcHax3\main.cpp(166,79): warning C4305: '+=': truncation from 'double' to 'float'
+﻿  hook.cpp
+E:\Repos\AcHax3\AcHax3\hook.cpp(17,32): warning C4018: '<': signed/unsigned mismatch
+E:\Repos\AcHax3\AcHax3\hook.cpp(34,127): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+E:\Repos\AcHax3\AcHax3\hook.cpp(34,113): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
   Generating code
-  2 of 34 functions ( 5.9%) were compiled, the rest were copied from previous compilation.
+  1 of 126 functions ( 0.8%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     1 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
