@@ -27,7 +27,8 @@ BOOL __stdcall hkwglSwapBuffers(HDC hDc)
     Vector2 headLoco;
     Vector2 localizedScreenSize = { 1600, 900 };
     Vector2 centerLocalizedScreenSize = { 1600/2, 900/2 };
-    const GLubyte color[3] =
+    
+    static GLubyte color[3] =
     {
         255,0,255
     };
@@ -54,18 +55,27 @@ BOOL __stdcall hkwglSwapBuffers(HDC hDc)
                                     if (WorldToScreen(current_player_ent->BodyPos, enemyW2Spoint, matrix, localizedScreenSize.x, localizedScreenSize.y))
                                     {
                                         WorldToScreen(current_player_ent->HeadPos, headLoco, matrix, localizedScreenSize.x, localizedScreenSize.y);
-                                        tracer(centerLocalizedScreenSize , headLoco, color);
+                                        if (playerLoop() == current_player)
+                                        {
+                                            color[0] = (GLubyte)(rand() % 255);
+                                            color[1] = (GLubyte)(rand() % 255);
+                                            color[2] = (GLubyte)(rand() % 255);
+                                        }
+                                        tracer(centerLocalizedScreenSize, headLoco, color);
+                                        color[0] = 255;
+                                        color[1] = 0;
+                                        color[2] = 255;
                                     }
                                 }
                             }
                         }
+ 
                     }
                 }
             }
         }
+
     }
-
-
 	return owglSwapBuffers(hDc);
 }
 

@@ -67,3 +67,15 @@ void frame::warn(const char* warn)
 	SetConsoleTextAttribute(hConsole, (FOREGROUND_GREEN));
 	consoleLineWarn += 1;
 }
+bool frame::isTeamGame()
+{
+	int gameMode = *(int*)GetModuleHandleA(NULL) + 0x10F49C;
+	if (gameMode == 7 || gameMode == 20 || gameMode == 21)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}

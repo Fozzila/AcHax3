@@ -1,7 +1,1 @@
-﻿  hook.cpp
-E:\Repos\AcHax3\AcHax3\hook.cpp(36,36): warning C4018: '<': signed/unsigned mismatch
-E:\Repos\AcHax3\AcHax3\hook.cpp(54,149): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-E:\Repos\AcHax3\AcHax3\hook.cpp(54,126): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-E:\Repos\AcHax3\AcHax3\hook.cpp(56,144): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-E:\Repos\AcHax3\AcHax3\hook.cpp(56,121): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-  AcHax3.vcxproj -> E:\Repos\AcHax3\Debug\AcHax3.dll
+﻿LINK : fatal error LNK1168: cannot open E:\Repos\AcHax3\Debug\AcHax3.dll for writing

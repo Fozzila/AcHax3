@@ -32,5 +32,6 @@ namespace frame
 	float teamCheck(DWORD ent);
 	void log(string);
 	void warn(const char* warn);
+	bool isTeamGame();
 
 }
