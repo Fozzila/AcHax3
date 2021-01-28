@@ -141,6 +141,7 @@ void mainLoop()
                 else
                     frame::log("Recoil: Off");
             }
+
             // CLOSE
             if (GetAsyncKeyState(VK_END) & 1) 
             {

@@ -1,7 +1,5 @@
 #pragma once
-#include "stdafx.h"
-#include <windows.h>
-#include <vector>
+#include "includes.h"
 //https://guidedhacking.com/threads/simple-x86-c-trampoline-hook.14188/
 
 namespace mem

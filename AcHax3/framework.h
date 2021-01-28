@@ -4,6 +4,7 @@
 #define toString(x) std::to_string(x)
 namespace frame
 {
+	
 
 	static bool healthToggle = false;
 	static bool AmmoToggle = false;
@@ -13,9 +14,6 @@ namespace frame
 	static bool aimbot = false;
 	static bool recoil = false;
 	static bool debug = false;
-	class keys
-	{
-	};
 	class offsets
 	{
 	public:
@@ -29,9 +27,10 @@ namespace frame
 		return { (float)*(int*)((DWORD)GetModuleHandleA(NULL) + 0x110C94), (float)*(int*)((DWORD)GetModuleHandleA(NULL) + 0x110C98) };
 	}
 	Vector2 viewAngle();
-	static Vector2 centerScreen();
+	Vector2 centerScreen();
 	static float getMarix();
 	float teamCheck(DWORD ent);
 	void log(string);
 	void warn(const char* warn);
+
 }

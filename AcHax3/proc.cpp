@@ -1,5 +1,7 @@
-#include "stdafx.h"
-#include "proc.h"
+#include "includes.h"
+#include <TlHelp32.h>
+
+#define WIN32_LEAN_AND_MEAN
 //https://guidedhacking.com/threads/simple-x86-c-trampoline-hook.14188/
 
 DWORD GetProcId(const wchar_t* procName)

@@ -16,7 +16,7 @@ void intro()
     std::cout << " \r";
     if ((DWORD)GetModuleHandleA(NULL))
     {
-        std::cout << "Success! Got Game Handle: " << (DWORD)(GetModuleHandleA(NULL));
+        std::cout << "Success! Got Game Handle: " << std::hex << (DWORD)(GetModuleHandleA(NULL));
     }
     Sleep(2000);
     std::cout << "                                                                     \r";
@@ -30,6 +30,7 @@ void intro()
     std::cout << "[F5] Jump+ \n";
     std::cout << "[F6] Aimbot \n";
     std::cout << "[F7] Recoil \n";
+    std::cout << "[F8] ESP \n";
     std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~ \n";
     
 }

@@ -1,40 +1,61 @@
 #include "includes.h"
+bool esp = false;
 typedef BOOL(__stdcall* twglSwapBuffers) (HDC hDc);
 
 twglSwapBuffers owglSwapBuffers;
 
 BOOL __stdcall hkwglSwapBuffers(HDC hDc)
 {
-    Vector2 screensize = frame::screenSize();
+    if (GetAsyncKeyState(VK_F8) & 1)
+    {
+        esp = !esp;
+        if (esp) {
+            frame::log("ESP: On");
+        }
+        else
+        {
+            frame::log("ESP: Off");
+        }
+
+
+    }
+    
+   
     DWORD viewMatrix = 0x501AE8;
     float matrix[16];
     Vector2 enemyW2Spoint;
-    memcpy(&matrix, (PBYTE*)viewMatrix, sizeof(matrix));
+    Vector2 headLoco;
+    Vector2 localizedScreenSize = { 1600, 900 };
+    Vector2 centerLocalizedScreenSize = { 1600/2, 900/2 };
     const GLubyte color[3] =
     {
         255,0,255
     };
-    for (unsigned int i = 0; i < frame::offsets::playerNum(); i++)
+    if (esp)
     {
-        DWORD current_player = *(DWORD*)(frame::offsets::playerList() + 0x4 * i);
-
-        if (current_player)
+        for (unsigned int i = 0; i < frame::offsets::playerNum(); i++)
         {
-            if (*(int*)(current_player + 0x0338) == 0)
+            memcpy(&matrix, (PBYTE*)viewMatrix, sizeof(matrix));
+            DWORD current_player = *(DWORD*)(frame::offsets::playerList() + 0x4 * i);
+
+            if (current_player)
             {
-                if (current_player != frame::offsets::playerAddress())
+                if (*(int*)(current_player + 0x0338) == 0)
                 {
-                    if (frame::teamCheck(current_player))
+                    if (current_player != frame::offsets::playerAddress())
                     {
-                        entity* current_player_ent = (entity*)(current_player);
-                        if (current_player_ent)
+                        if (frame::teamCheck(current_player))
                         {
-                            if (current_player_ent->Health < 120 || current_player_ent->Health > -1)
+                            entity* current_player_ent = (entity*)(current_player);
+                            if (current_player_ent)
                             {
-                                if (WorldToScreen(current_player_ent->BodyPos, enemyW2Spoint, matrix, screensize.x, screensize.y)) 
+                                if (current_player_ent->Health < 120 || current_player_ent->Health > -1)
                                 {
-                                   
-                                    DrawOutline(enemyW2Spoint.x + 100, enemyW2Spoint.y, 50, 100, 1, color);
+                                    if (WorldToScreen(current_player_ent->BodyPos, enemyW2Spoint, matrix, localizedScreenSize.x, localizedScreenSize.y))
+                                    {
+                                        WorldToScreen(current_player_ent->HeadPos, headLoco, matrix, localizedScreenSize.x, localizedScreenSize.y);
+                                        tracer(centerLocalizedScreenSize , headLoco, color);
+                                    }
                                 }
                             }
                         }
@@ -43,6 +64,7 @@ BOOL __stdcall hkwglSwapBuffers(HDC hDc)
             }
         }
     }
+
 
 	return owglSwapBuffers(hDc);
 }

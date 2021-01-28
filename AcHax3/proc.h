@@ -1,9 +1,5 @@
 #pragma once
-#include <vector>
-#include <windows.h>
-#include <TlHelp32.h>
-//https://guidedhacking.com/threads/simple-x86-c-trampoline-hook.14188/
-
+#include "includes.h"
 DWORD GetProcId(const wchar_t* procName);
 
 uintptr_t GetModuleBaseAddress(DWORD procId, const wchar_t* modName);
