@@ -1,5 +1,6 @@
 #include "includes.h"
-DWORD playerLoop()
+
+ DWORD playerLoop()
 {
     float bestdistToCenter = FLT_MAX;
     DWORD bestPlayerInCheck = NULL;
@@ -34,8 +35,6 @@ DWORD playerLoop()
                             }
                         }
                     }
-                    
-
                 }
             }
         }
@@ -71,9 +70,10 @@ void mainLoop()
         // TOGGLES
         if (true) 
         {
+            
             // INF HEALTH
             if (GetAsyncKeyState(VK_F1) & 1) 
-            {
+            { 
                 frame::healthToggle = !frame::healthToggle;
                 if (frame::healthToggle)
                     frame::log("Inf Health: On");
@@ -147,6 +147,8 @@ void mainLoop()
             // CLOSE
             if (GetAsyncKeyState(VK_END) & 1) 
             {
+                unHook();
+                frame::log("Unhooked Successfully!");
                 frame::warn("Cheat Closing: 3");
                 Sleep(1000);
                 frame::warn("Cheat Closing: 2");
@@ -172,8 +174,12 @@ void mainLoop()
             {
                 if (GetAsyncKeyState(VK_F10))
                 {
-                    string beam = toString(frame::offsets::playerPtr()->localPlayerPtr->Health);
-                    frame::log(beam);
+                    mem::Nop((BYTE*)0x45BDD8, 9);
+                    
+                }
+                if (GetAsyncKeyState(VK_F9))
+                {
+                     
                 }
 
             }
@@ -186,7 +192,11 @@ void mainLoop()
             if (frame::rapidFireToggle)
                 frame::offsets::playerPtr()->localPlayerPtr->primaryTimer = 50; // MEMORY WRITING FREEZING
             if (frame::increasedJump && GetAsyncKeyState(0x20))
-                    frame::offsets::playerPtr()->localPlayerPtr->BodyPos.z += 0.05; // MEMORY WRITING FREEZING
+            {
+                frame::offsets::playerPtr()->localPlayerPtr->BodyPos.z += 0.05; // MEMORY WRITING FREEZING
+                *(int*)(frame::offsets::playerAddress() + 0x68) = 256;
+
+            }
             if (frame::recoil)
                 frame::offsets::playerPtr()->localPlayerPtr->recoilXspeedY.x -= frame::offsets::playerPtr()->localPlayerPtr->recoilXspeedY.x *= FLT_TRUE_MIN;
             if (frame::aimbot && GetAsyncKeyState(VK_KEY_F))

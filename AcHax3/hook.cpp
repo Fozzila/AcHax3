@@ -3,7 +3,11 @@ bool esp = false;
 typedef BOOL(__stdcall* twglSwapBuffers) (HDC hDc);
 
 twglSwapBuffers owglSwapBuffers;
-
+bool unHook()
+{
+    mem::Patch((BYTE*)0x6EED0B30, (BYTE*)"\x66\x90\x55\x88\xEC", 5);
+    return true;
+}
 BOOL __stdcall hkwglSwapBuffers(HDC hDc)
 {
     if (GetAsyncKeyState(VK_F8) & 1)
