@@ -34,7 +34,7 @@ BOOL __stdcall hkwglSwapBuffers(HDC hDc)
     
     static GLubyte color[3] =
     {
-        255,0,255
+        255,255,255
     };
     if (esp)
     {
@@ -61,14 +61,14 @@ BOOL __stdcall hkwglSwapBuffers(HDC hDc)
                                         WorldToScreen(current_player_ent->HeadPos, headLoco, matrix, localizedScreenSize.x, localizedScreenSize.y);
                                         if (playerClosestToCursor() == current_player)
                                         {
-                                            color[0] = (GLubyte)255;
+                                            color[0] = (GLubyte)0;
                                             color[1] = (GLubyte)255;
-                                            color[2] = (GLubyte)255;
+                                            color[2] = (GLubyte)0;
                                         }
                                         tracer(centerLocalizedScreenSize, headLoco, color);
                                         color[0] = 255;
-                                        color[1] = 0;
-                                        color[2] = 0;
+                                        color[1] = 255;
+                                        color[2] = 255;
                                     }
                                 }
                             }

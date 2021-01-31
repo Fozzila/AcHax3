@@ -1,11 +1,16 @@
-﻿  hook.cpp
-E:\Repos\AcHax3\AcHax3\hook.cpp(41,36): warning C4018: '<': signed/unsigned mismatch
-E:\Repos\AcHax3\AcHax3\hook.cpp(59,149): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-E:\Repos\AcHax3\AcHax3\hook.cpp(59,126): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-E:\Repos\AcHax3\AcHax3\hook.cpp(61,144): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-E:\Repos\AcHax3\AcHax3\hook.cpp(61,121): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+﻿  main.cpp
+E:\Repos\AcHax3\AcHax3\main.cpp(18,32): warning C4018: '<': signed/unsigned mismatch
+E:\Repos\AcHax3\AcHax3\main.cpp(15,13): warning C4101: 'calcAngle': unreferenced local variable
+E:\Repos\AcHax3\AcHax3\main.cpp(62,32): warning C4018: '<': signed/unsigned mismatch
+E:\Repos\AcHax3\AcHax3\main.cpp(132,61): warning C4244: 'argument': conversion from 'float' to 'DWORD', possible loss of data
+E:\Repos\AcHax3\AcHax3\main.cpp(132,48): warning C4244: 'argument': conversion from 'float' to 'DWORD', possible loss of data
+E:\Repos\AcHax3\AcHax3\main.cpp(134,32): warning C4018: '<': signed/unsigned mismatch
+E:\Repos\AcHax3\AcHax3\main.cpp(168,59): warning C4244: 'argument': conversion from 'float' to 'DWORD', possible loss of data
+E:\Repos\AcHax3\AcHax3\main.cpp(168,46): warning C4244: 'argument': conversion from 'float' to 'DWORD', possible loss of data
+E:\Repos\AcHax3\AcHax3\main.cpp(316,79): warning C4305: '+=': truncation from 'double' to 'float'
   Generating code
-  4 of 114 functions ( 3.5%) were compiled, the rest were copied from previous compilation.
+E:\Repos\AcHax3\AcHax3\main.cpp(53): warning C4715: 'closestDist': not all control paths return a value
+  5 of 118 functions ( 4.2%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     1 functions had inline decision re-evaluated but remain unchanged
   Finished generating code

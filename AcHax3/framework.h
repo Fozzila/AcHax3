@@ -14,6 +14,7 @@ namespace frame
 	static bool aimbot = false;
 	static bool recoil = false;
 	static bool debug = false;
+	static bool teleKill = false;
 	class offsets
 	{
 	public:

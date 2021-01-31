@@ -31,6 +31,7 @@ void intro()
     std::cout << "[F6] Aimbot \n";
     std::cout << "[F7] Recoil \n";
     std::cout << "[F8] ESP \n";
+    std::cout << "[F9] TeleKill \n";
     std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~ \n";
     
 }

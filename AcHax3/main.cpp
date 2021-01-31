@@ -1,7 +1,59 @@
 #include "includes.h"
+Vector2 cursPos()
+{
+    POINT p;
+    if (GetCursorPos(&p))
+    {
+        return { (float)p.x, (float)p.y };
+    }
+}
+DWORD closestDist()
+{
 
+    float bestdistToCenter = FLT_MAX;
+    DWORD bestPlayerInCheck = NULL;
+    Vector2 calcAngle;
+    float dist2;
+
+    for (unsigned int i = 0; i < frame::offsets::playerNum(); i++)
+    {
+        DWORD current_player = *(DWORD*)(frame::offsets::playerList() + 0x4 * i);
+
+        if (current_player)
+        {
+            if (*(int*)(current_player + 0x0338) == 0)
+            {
+                if (current_player != frame::offsets::playerAddress())
+                {
+                    if (frame::teamCheck(current_player))
+                    {
+                        entity* current_player_ent = (entity*)(current_player);
+                        if (current_player_ent)
+                        {
+                            if (current_player_ent->Health < 120 || current_player_ent->Health > -1)
+                            {
+                                dist2 = Get3DDistance(current_player_ent->BodyPos, frame::offsets::playerPtr()->localPlayerPtr->BodyPos);
+
+                                if (dist2 < bestdistToCenter)
+                                {
+                                    bestdistToCenter = dist2;
+                                    bestPlayerInCheck = current_player;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if (bestPlayerInCheck != NULL)
+    {
+        return bestPlayerInCheck;
+    }
+}
  DWORD playerClosestToCursor()
 {
+
     float bestdistToCenter = FLT_MAX;
     DWORD bestPlayerInCheck = NULL;
     Vector2 calcAngle;
@@ -47,7 +99,7 @@
 
 
 
-void aimbotF()
+void cursorAimbot()
 {
     Vector2 angle;
     entity* bestEnt = (entity*)playerClosestToCursor();
@@ -58,8 +110,66 @@ void aimbotF()
         frame::offsets::playerPtr()->localPlayerPtr->viewAngle.y = angle.y;
     }
 }
+void distanceAimbot()
+{
+    
+    Vector2 angle;
+    entity* bestEnt = (entity*)closestDist();
+    if (bestEnt->Health < 200 || bestEnt->Health > -1)
+    {
+        angle = CalcAngle(frame::offsets::playerPtr()->localPlayerPtr->HeadPos, bestEnt->HeadPos);
+        frame::offsets::playerPtr()->localPlayerPtr->viewAngle.x = angle.x;
+        frame::offsets::playerPtr()->localPlayerPtr->viewAngle.y = angle.y;
+    }
+}
 
+bool teleKillLoop()
+{
+    INPUT Inputs[1] = { 0 };
+    Inputs[1].type = INPUT_MOUSE;
+    Inputs[1].mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
+    Vector3 prevPos = frame::offsets::playerPtr()->localPlayerPtr->BodyPos;
+    mouse_event(MOUSEEVENTF_LEFTDOWN, cursPos().x, cursPos().y, 0, 0);
 
+    for (unsigned int i = 0; i < frame::offsets::playerNum(); i++)
+    {
+
+        DWORD current_player = *(DWORD*)(frame::offsets::playerList() + 0x4 * i);
+        if (current_player != frame::offsets::playerAddress() && current_player && frame::teamCheck(current_player))
+        {
+            entity* current_player_ent = (entity*)current_player;
+
+            while(*(int*)(current_player + 0x0338) == 0)
+            {
+               
+                frame::offsets::playerPtr()->localPlayerPtr->BodyPos = current_player_ent->BodyPos;
+                frame::offsets::playerPtr()->localPlayerPtr->BodyPos.x = current_player_ent->BodyPos.x + 3;
+                distanceAimbot();
+                if (GetAsyncKeyState(VK_F9) & 1)
+                {
+                    frame::teleKill = !frame::teleKill;
+                    if (frame::teleKill)
+                        frame::log("TeleKill: On");
+                    else
+                        frame::log("TeleKill: Off");
+                }
+                if (frame::teleKill == false)
+                {
+                    break;
+                }
+
+            }
+        }
+        if (frame::teleKill == false)
+        {
+            break;
+        }
+    }
+    mouse_event(MOUSEEVENTF_LEFTUP, cursPos().x, cursPos().y, 0, 0);
+    frame::offsets::playerPtr()->localPlayerPtr->BodyPos = prevPos;
+    return true;
+
+}
 
 void mainLoop()
 {
@@ -143,6 +253,14 @@ void mainLoop()
                 else
                     frame::log("Recoil: Off");
             }
+            if (GetAsyncKeyState(VK_F9) & 1)
+            {
+                frame::teleKill = !frame::teleKill;
+                if (frame::teleKill)
+                    frame::log("TeleKill: On");
+                else
+                    frame::log("TeleKill: Off");
+            }
 
             // CLOSE
             if (GetAsyncKeyState(VK_END) & 1) 
@@ -179,10 +297,12 @@ void mainLoop()
                 }
                 if (GetAsyncKeyState(VK_F9))
                 {
-                     
+                    teleKillLoop();
                 }
 
             }
+            if (frame::teleKill)
+                teleKillLoop();
             if (frame::healthToggle)
                 frame::offsets::playerPtr()->localPlayerPtr->Health = 999; // MEMORY WRITING FREEZING
             if (frame::AmmoToggle)
@@ -200,7 +320,7 @@ void mainLoop()
             if (frame::recoil)
                 frame::offsets::playerPtr()->localPlayerPtr->recoilXspeedY.x -= frame::offsets::playerPtr()->localPlayerPtr->recoilXspeedY.x *= FLT_TRUE_MIN;
             if (frame::aimbot && GetAsyncKeyState(VK_KEY_F))
-                    aimbotF();
+                    cursorAimbot();
         }
         Sleep(1);
     }
