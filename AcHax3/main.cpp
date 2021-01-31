@@ -1,6 +1,6 @@
 #include "includes.h"
 
- DWORD playerLoop()
+ DWORD playerClosestToCursor()
 {
     float bestdistToCenter = FLT_MAX;
     DWORD bestPlayerInCheck = NULL;
@@ -50,7 +50,7 @@
 void aimbotF()
 {
     Vector2 angle;
-    entity* bestEnt = (entity*)playerLoop();
+    entity* bestEnt = (entity*)playerClosestToCursor();
     if (bestEnt->Health < 200 || bestEnt->Health > -1)
     {
         angle = CalcAngle(frame::offsets::playerPtr()->localPlayerPtr->HeadPos, bestEnt->HeadPos);

@@ -21,7 +21,7 @@
 #include <gl/GLU.h>
 #include "openGl.h"
 #include <SDKDDKVer.h>
-#include "includes.h"
+
 #endif 
 
 
