@@ -1,6 +1,6 @@
 #pragma once
 #include "includes.h"
-#define string std::string
+#define MY_STRING std::string
 #define toString(x) std::to_string(x)
 namespace frame
 {
@@ -30,7 +30,7 @@ namespace frame
 	Vector2 centerScreen();
 	static float getMarix();
 	float teamCheck(DWORD ent);
-	void log(string);
+	void log(MY_STRING);
 	void warn(const char* warn);
 	bool isTeamGame();
 

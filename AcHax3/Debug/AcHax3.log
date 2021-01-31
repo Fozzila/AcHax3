@@ -1,1 +1,5 @@
-﻿LINK : fatal error LNK1168: cannot open E:\Repos\AcHax3\Debug\AcHax3.dll for writing
+﻿  main.cpp
+E:\Repos\AcHax3\AcHax3\main.cpp(10,32): warning C4018: '<': signed/unsigned mismatch
+E:\Repos\AcHax3\AcHax3\main.cpp(194,79): warning C4305: '+=': truncation from 'double' to 'float'
+E:\Repos\AcHax3\AcHax3\main.cpp(46): warning C4715: 'playerLoop': not all control paths return a value
+LINK : fatal error LNK1168: cannot open E:\Repos\AcHax3\Debug\AcHax3.dll for writing

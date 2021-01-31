@@ -3,7 +3,11 @@ bool esp = false;
 typedef BOOL(__stdcall* twglSwapBuffers) (HDC hDc);
 
 twglSwapBuffers owglSwapBuffers;
-
+bool unHook()
+{
+    mem::Patch((BYTE*)GetProcAddress(GetModuleHandle(L"opengl32.dll"), "wglSwapBuffers") , (BYTE*)"\x66\x90\x55\x88\xEC", 5);
+    return true;
+}
 BOOL __stdcall hkwglSwapBuffers(HDC hDc)
 {
     if (GetAsyncKeyState(VK_F8) & 1)
@@ -55,16 +59,16 @@ BOOL __stdcall hkwglSwapBuffers(HDC hDc)
                                     if (WorldToScreen(current_player_ent->BodyPos, enemyW2Spoint, matrix, localizedScreenSize.x, localizedScreenSize.y))
                                     {
                                         WorldToScreen(current_player_ent->HeadPos, headLoco, matrix, localizedScreenSize.x, localizedScreenSize.y);
-                                        if (playerLoop() == current_player)
+                                        if (playerClosestToCursor() == current_player)
                                         {
-                                            color[0] = (GLubyte)(rand() % 255);
-                                            color[1] = (GLubyte)(rand() % 255);
-                                            color[2] = (GLubyte)(rand() % 255);
+                                            color[0] = (GLubyte)255;
+                                            color[1] = (GLubyte)255;
+                                            color[2] = (GLubyte)255;
                                         }
                                         tracer(centerLocalizedScreenSize, headLoco, color);
                                         color[0] = 255;
                                         color[1] = 0;
-                                        color[2] = 255;
+                                        color[2] = 0;
                                     }
                                 }
                             }

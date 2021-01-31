@@ -1,12 +1,12 @@
 ﻿  hook.cpp
-E:\Repos\AcHax3\AcHax3\hook.cpp(37,36): warning C4018: '<': signed/unsigned mismatch
-E:\Repos\AcHax3\AcHax3\hook.cpp(55,149): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-E:\Repos\AcHax3\AcHax3\hook.cpp(55,126): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-E:\Repos\AcHax3\AcHax3\hook.cpp(57,144): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-E:\Repos\AcHax3\AcHax3\hook.cpp(57,121): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+E:\Repos\AcHax3\AcHax3\hook.cpp(41,36): warning C4018: '<': signed/unsigned mismatch
+E:\Repos\AcHax3\AcHax3\hook.cpp(59,149): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+E:\Repos\AcHax3\AcHax3\hook.cpp(59,126): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+E:\Repos\AcHax3\AcHax3\hook.cpp(61,144): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+E:\Repos\AcHax3\AcHax3\hook.cpp(61,121): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
   Generating code
-  0 of 126 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+  4 of 114 functions ( 3.5%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+    1 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   AcHax3.vcxproj -> E:\Repos\AcHax3\Release\AcHax3.dll
